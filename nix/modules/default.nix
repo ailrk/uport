@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+self: { config, lib, pkgs, ... }:
 
 let
   cfg = config.services.uport;
@@ -8,8 +8,8 @@ in {
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.uport-server;
-      description = "The uport-server package to run.";
+      default = self.packages.${pkgs.system}.default;
+      description = "The uport package to run.";
     };
 
     port = lib.mkOption {
@@ -41,7 +41,7 @@ in {
         Type = "simple";
         DynamicUser = true;
         StateDirectory = "uport";
-        ExecStart = "${cfg.package}/bin/uport-server";
+        ExecStart = "${cfg.package}/bin/uport";
         Environment = [
           "PORT=${toString cfg.port}"
           "BASE_URL=${cfg.baseUrl}"

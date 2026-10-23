@@ -7,26 +7,26 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+    let
+      overlay = final: prev: {
+        uport = final.haskellPackages.callCabal2nix "uport" self {};
+      };
+    in
+    (flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
-
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ overlay ];
+        };
         hPkgs = pkgs.haskellPackages;
-        packageName = "uport";
-        uPortPkg = hPkgs.callCabal2nix packageName self {};
-
+        uPortPkg = pkgs.uport;
       in
       {
-        # Packages/Derivations: `nix build .#upload-portal-server`, etc.
         packages = {
           default = uPortPkg;
-          server = pkgs.lib.getExe' uPortPkg "uport-server";
-          cli = pkgs.lib.getExe' uPortPkg "uport-cli";
+          uport = uPortPkg;
         };
 
-        nixosModules.default = import ./nix/modules/server.nix;
-
-        # Development Environment: `nix develop`
         devShells.default = hPkgs.shellFor {
           packages = p: [ uPortPkg ];
           withHoogle = true;
@@ -38,5 +38,8 @@
           ];
         };
       }
-    );
+    )) // {
+      overlays.default = overlay;
+      nixosModules.default = import ./nix/modules/default.nix self;
+    };
 }
