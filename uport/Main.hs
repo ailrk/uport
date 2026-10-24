@@ -164,15 +164,20 @@ adminHTML = [i|<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>uport - Admin Dashboard</title>
 <style>
   body { font-family: system-ui, sans-serif; background: \#f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; box-sizing: border-box; padding: 1rem; }
-  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 450px; box-sizing: border-box; }
+  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 480px; box-sizing: border-box; }
   h2 { margin-top: 0; text-align: center; }
   .form-group { margin-bottom: 1rem; }
   label { display: block; font-size: 0.85rem; font-weight: 500; color: \#475569; margin-bottom: 0.25rem; }
   input[type=number] { width: 100%; padding: 0.5rem; border: 1px solid \#cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
-  button { width: 100%; background: \#2563eb; color: white; border: none; padding: 0.75rem; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: 500; margin-top: 0.5rem; }
-  button:hover { background: \#1d4ed8; }
-  .result { margin-top: 1.5rem; background: \#f1f5f9; padding: 1rem; border-radius: 8px; font-size: 0.85rem; word-break: break-all; box-sizing: border-box; }
-  .result p { margin: 0.5rem 0; }
+  button.primary { width: 100%; background: \#2563eb; color: white; border: none; padding: 0.75rem; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: 500; margin-top: 0.5rem; }
+  button.primary:hover { background: \#1d4ed8; }
+  .result { margin-top: 1.5rem; background: \#f1f5f9; padding: 1rem; border-radius: 8px; font-size: 0.85rem; box-sizing: border-box; }
+  .result p { margin: 0.75rem 0; word-break: break-all; display: flex; flex-direction: column; gap: 0.25rem; }
+  .link-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; background: white; padding: 0.4rem 0.6rem; border: 1px solid \#cbd5e1; border-radius: 6px; }
+  .link-row a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: \#2563eb; text-decoration: none; }
+  .link-row a:hover { text-decoration: underline; }
+  button.copy-btn { background: \#e2e8f0; color: \#334155; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  button.copy-btn:hover { background: \#cbd5e1; }
   .otp-badge { background: \#dcfce7; color: \#16a34a; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; font-family: monospace; }
   .hidden { display: none !important; }
 </style></head><body>
@@ -190,10 +195,22 @@ adminHTML = [i|<!DOCTYPE html>
       <label>Max Uses</label>
       <input type="number" id="maxUses" value="1">
     </div>
-    <button onclick="createPortal()">Generate Portal Links</button>
+    <button class="primary" onclick="createPortal()">Generate Portal Links</button>
     <div id="resultBox" class="result hidden">
-      <p><b>Upload:</b> <a id="uploadLink" href="\#" target="_blank"></a></p>
-      <p><b>Receive:</b> <a id="receiveLink" href="\#" target="_blank"></a></p>
+      <p>
+        <b>Upload Link:</b>
+        <span class="link-row">
+          <a id="uploadLink" href="\#" target="_blank"></a>
+          <button class="copy-btn" onclick="copyLink('uploadLink', this)">Copy</button>
+        </span>
+      </p>
+      <p>
+        <b>Receive Link:</b>
+        <span class="link-row">
+          <a id="receiveLink" href="\#" target="_blank"></a>
+          <button class="copy-btn" onclick="copyLink('receiveLink', this)">Copy</button>
+        </span>
+      </p>
       <p><b>OTP PIN:</b> <span id="otpText" class="otp-badge"></span></p>
     </div>
   </div>
@@ -220,6 +237,21 @@ adminHTML = [i|<!DOCTYPE html>
         document.getElementById('resultBox').classList.remove('hidden');
       })
       .catch(err => alert('Failed to create portal: ' + err));
+    }
+
+    function copyLink(elementId, btn) {
+      const url = document.getElementById(elementId).href;
+      navigator.clipboard.writeText(url).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = 'Copied!';
+        btn.style.background = '\#dcfce7';
+        btn.style.color = '\#16a34a';
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.background = '\#e2e8f0';
+          btn.style.color = '\#334155';
+        }, 1500);
+      }).catch(err => alert('Failed to copy: ' + err));
     }
   </script></body></html>|]
 
