@@ -161,17 +161,17 @@ main = do
 
 adminHTML :: T.Text
 adminHTML = [i|<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>uport - Admin Dashboard</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>uport - Admin Dashboard</title>
 <style>
-  body { font-family: system-ui, sans-serif; background: \#f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 450px; }
+  body { font-family: system-ui, sans-serif; background: \#f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; box-sizing: border-box; padding: 1rem; }
+  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 450px; box-sizing: border-box; }
   h2 { margin-top: 0; text-align: center; }
   .form-group { margin-bottom: 1rem; }
   label { display: block; font-size: 0.85rem; font-weight: 500; color: \#475569; margin-bottom: 0.25rem; }
   input[type=number] { width: 100%; padding: 0.5rem; border: 1px solid \#cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
   button { width: 100%; background: \#2563eb; color: white; border: none; padding: 0.75rem; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: 500; margin-top: 0.5rem; }
   button:hover { background: \#1d4ed8; }
-  .result { margin-top: 1.5rem; background: \#f1f5f9; padding: 1rem; border-radius: 8px; font-size: 0.85rem; word-break: break-all; }
+  .result { margin-top: 1.5rem; background: \#f1f5f9; padding: 1rem; border-radius: 8px; font-size: 0.85rem; word-break: break-all; box-sizing: border-box; }
   .result p { margin: 0.5rem 0; }
   .otp-badge { background: \#dcfce7; color: \#16a34a; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; font-family: monospace; }
   .hidden { display: none !important; }
@@ -225,14 +225,14 @@ adminHTML = [i|<!DOCTYPE html>
 
 uploadHTML :: T.Text -> T.Text
 uploadHTML token = [i|<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Upload Portal - OTP Required</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Upload Portal - OTP Required</title>
 <style>
-  body { font-family: system-ui, sans-serif; background: \#f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 400px; text-align: center; }
-  .dropzone { border: 2px dashed \#94a3b8; border-radius: 8px; padding: 2rem; cursor: pointer; transition: 0.2s; }
+  body { font-family: system-ui, sans-serif; background: \#f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; box-sizing: border-box; padding: 1rem; }
+  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; box-sizing: border-box; }
+  .dropzone { border: 2px dashed \#94a3b8; border-radius: 8px; padding: 2rem; cursor: pointer; transition: 0.2s; box-sizing: border-box; }
   .dropzone.dragover { border-color: \#16a34a; background: \#f0fdf4; }
-  \#status { margin-top: 1rem; font-weight: 500; font-size: 0.9rem; }
-  input[type=text] { padding: 0.5rem; width: 80%; font-size: 1rem; border: 1px solid \#cbd5e1; border-radius: 6px; margin-bottom: 1rem; text-align: center; letter-spacing: 2px; }
+  \#status { margin-top: 1rem; font-weight: 500; font-size: 0.9rem; word-break: break-all; }
+  input[type=text] { padding: 0.5rem; width: 100%; max-width: 250px; font-size: 1rem; border: 1px solid \#cbd5e1; border-radius: 6px; margin-bottom: 1rem; text-align: center; letter-spacing: 2px; box-sizing: border-box; }
   button { background: \#2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 1rem; cursor: pointer; }
   button:hover { background: \#1d4ed8; }
   .hidden { display: none !important; }
@@ -249,7 +249,7 @@ uploadHTML token = [i|<!DOCTYPE html>
     <div id="uploadScreen" class="hidden">
       <h2>Secure Upload Portal</h2>
       <div class="dropzone" id="dz">
-        <p>Drag & Drop files here, or click to browse</p>
+        <p>Drag & Drop files here, or tap to browse</p>
         <input type="file" id="fileInput" multiple style="display:none;">
       </div>
       <div id="status"></div>
@@ -296,18 +296,18 @@ uploadHTML token = [i|<!DOCTYPE html>
 
 receiveHTML :: T.Text -> T.Text
 receiveHTML token = [i|<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Receive Portal - OTP Required</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Receive Portal - OTP Required</title>
 <style>
-  body { font-family: system-ui, sans-serif; background: \#f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 480px; }
+  body { font-family: system-ui, sans-serif; background: \#f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; box-sizing: border-box; padding: 1rem; }
+  .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 480px; box-sizing: border-box; }
   h2 { margin-top: 0; text-align: center; }
   ul { list-style: none; padding: 0; margin: 1rem 0; max-height: 250px; overflow-y: auto; }
-  li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid \#e2e8f0; }
-  .badge { background: \#dcfce7; color: \#16a34a; padding: 0.25rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-  a.btn { background: \#2563eb; color: white; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+  li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid \#e2e8f0; gap: 0.5rem; word-break: break-all; }
+  .badge { background: \#dcfce7; color: \#16a34a; padding: 0.25rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+  a.btn { background: \#2563eb; color: white; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; white-space: nowrap; }
   a.btn:hover { background: \#1d4ed8; }
   \#info { font-size: 0.85rem; color: \#64748b; text-align: center; margin-top: 1rem; }
-  input[type=text] { padding: 0.5rem; width: 80%; font-size: 1rem; border: 1px solid \#cbd5e1; border-radius: 6px; margin-bottom: 1rem; text-align: center; letter-spacing: 2px; display: block; margin-left: auto; margin-right: auto; }
+  input[type=text] { padding: 0.5rem; width: 100%; max-width: 250px; font-size: 1rem; border: 1px solid \#cbd5e1; border-radius: 6px; margin-bottom: 1rem; text-align: center; letter-spacing: 2px; display: block; margin-left: auto; margin-right: auto; box-sizing: border-box; }
   button { background: \#2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 1rem; cursor: pointer; display: block; margin-left: auto; margin-right: auto; }
   button:hover { background: \#1d4ed8; }
   .hidden { display: none !important; }
